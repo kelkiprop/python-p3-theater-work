@@ -1,84 +1,90 @@
-# Phase 3 Mock Code Challenge: Theater Work
+# Phase 3 Code Challenge: Theater Work
 
-## Learning Goals
+## Overview
+This project is a command-line interface (CLI) application that manages auditions for a theater company using SQLAlchemy and SQLite. The application allows users to:
 
-- Write SQLAlchemy migrations.
-- Connect between tables using SQLAlchemy relationships.
-- Use SQLAlchemy to run CRUD statements in the database.
+- Add roles for a theater play.
+- Add auditions for actors.
+- View roles and auditions.
+- Call back actors (mark them as hired).
+- Manage role assignments (lead and understudy).
 
-***
+## Project Structure
+```
+project-directory/
+│-- database.py
+│-- models.py
+│-- cli.py
+│-- README.md
+│-- Pipfile
+│-- Pipfile.lock
+│-- theater.db (auto-generated SQLite database)
+```
 
-## Key Vocab
+## Installation & Setup
 
-- **Schema**: the blueprint of a database. Describes how data relates to other
-  data in tables, columns, and relationships between them.
-- **Persist**: save a schema in a database.
-- **Engine**: a Python object that translates SQL to Python and vice-versa.
-- **Session**: a Python object that uses an engine to allow us to
-  programmatically interact with a database.
-- **Transaction**: a strategy for executing database statements such that
-  the group succeeds or fails as a unit.
-- **Migration**: the process of moving data from one or more databases to one
-  or more target databases.
-  
-***
+### 1. Clone the Repository
+```sh
+git clone <repository-url>
+cd project-directory
+```
 
-## Introduction
+### 2. Set Up a Virtual Environment
+```sh
+pipenv install
+pipenv shell
+```
 
-The Flatiron Theater Company is holding auditions!
+### 3. Run Database Migrations
+```sh
+python cli.py
+```
 
-An actor may only `Audition` for one `Role`, while a `Role` may have many
-`Auditions` for it!
+## Usage
+Run the application using:
+```sh
+python cli.py
+```
+You will be presented with a menu where you can interact with the system.
 
-![one to many](https://curriculum-content.s3.amazonaws.com/phase-3/active-record-theater-work/one_to_many.png)
+## Features
 
-## Getting started
+### 1. Add a Role
+Allows adding a new theater role.
 
-Run `pipenv install; pipenv shell`
+### 2. Add an Audition
+Actors audition for a specific role.
 
-## Migrations
+### 3. View Roles
+Lists all available roles.
 
-Create your migrations.
+### 4. View Auditions
+Lists all actors who auditioned.
 
-- `Auditions` should have an actor (string), location (string) and belong_to a
-  role (integer).
-- `Roles` should only have a character_name.
+### 5. Call Back an Actor
+Marks an actor as hired.
 
-### `auditions` Table
+### 6. Exit
+Closes the application.
 
-| Column | Type |
-| --- | --- |
-| actor | string |
-| location | string |
-| phone | integer |
-| hired | boolean |
-| role_id | integer |
+## Models
 
-### `roles` Table
+### Role
+- `id`: Primary key.
+- `character_name`: Name of the role.
+- Relationship: One `Role` can have many `Auditions`.
 
-| Column | Type |
-| --- | --- |
-| character_name | string |
-  
-## Relationship
+### Audition
+- `id`: Primary key.
+- `actor`: Name of the actor.
+- `location`: Audition location.
+- `phone`: Contact number.
+- `hired`: Boolean indicating if the actor was hired.
+- `role_id`: Foreign key linking to a `Role`.
 
-- What relationships will this need (i.e. one-to-one, one-to-many, and
-  many-to-many)?
+## SQLAlchemy Relationships
+- **One-to-Many**: A `Role` can have multiple `Auditions`, but an `Audition` belongs to only one `Role`.
 
-## Audition
+## License
+This project is licensed under the MIT License.
 
-- `Audition.role` returns an instance of role associated with this audition.
-- `Audition.call_back()` will change the the hired attribute to `True`.
-
-## Roles
-
-- `Role.auditions` returns all of the auditions associated with this role.
-- `Role.actors` returns a list of names from the actors associated with this
-  role.
-- `Role.locations` returns a list of locations from the auditions associated
-  with this role.
-- `Role.lead()` returns the first instance of the audition that was hired for
-  this role or returns a string 'no actor has been hired for this role'.
-- `Role.understudy()` returns the second instance of the audition that was hired
-  for this role or returns a string 'no actor has been hired for understudy for
-  this role'.
