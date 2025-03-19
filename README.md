@@ -25,7 +25,7 @@ project-directory/
 
 ### 1. Clone the Repository
 ```sh
-git clone <repository-url>
+git clone https://github.com/kelkiprop/python-p3-theater-work
 cd project-directory
 ```
 
